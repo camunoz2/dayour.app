@@ -7,7 +7,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        body: ['auto-pro-new', 'sans-serif'],
+        'body': ['auto-pro-new', 'sans-serif'],
+        'display': ['Gimlet Micro', 'sans-serif'],
+
       },
     },
   },
