@@ -1,9 +1,15 @@
+import type { ReactNode } from 'react'
+import type { NextComponentType } from 'next'
 import type { AppProps } from 'next/app'
-import { SessionProvider } from 'next-auth/react'
+import { SessionProvider, useSession } from 'next-auth/react'
 
 import '../styles/globals.css'
 
-function MyApp({ Component, pageProps: {session, ...pageProps} }: AppProps) {
+interface Props {
+  children: ReactNode
+}
+
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <SessionProvider session={session}>
       <Component {...pageProps} />

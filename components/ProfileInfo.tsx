@@ -17,12 +17,7 @@ export default function ProfileInfo() {
       <div className="hidden md:block">
         <h2 className="font-bold text-xl">{session?.user?.name}</h2>
         {!session ? (
-          <p
-            onClick={() => signIn()}
-            className="text-sm underline cursor-pointer"
-          >
-            Log In
-          </p>
+          ''
         ) : (
           <p
             onClick={() => signOut()}

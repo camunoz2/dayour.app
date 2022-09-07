@@ -3,8 +3,7 @@ import { unstable_getServerSession } from 'next-auth/next'
 import { authOptions } from './auth/[...nextauth]'
 
 interface Data {
-  responseMsg?: string
-  errorMsg?: string
+  content: string
 }
 
 export default async function protectedHanlder(
@@ -14,9 +13,9 @@ export default async function protectedHanlder(
   const session = await unstable_getServerSession(req, res, authOptions)
 
   if (!session) {
-    res.status(401).json({ responseMsg: 'Necesitas estar logeado' })
+    res.status(401).json({ content: 'Necesitas estar logeado' })
     return
   }
 
-  return res.json({ errorMsg: 'Hola! bienvenid@' })
+  return res.json({ content: 'Hola! bienvenid@' })
 }
