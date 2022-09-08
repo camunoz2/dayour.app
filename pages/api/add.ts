@@ -3,17 +3,27 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 interface ExtendedNextApiRequest extends NextApiRequest {
   query: {
     todo: string
+    user: string
   }
 }
 
 export default async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
-  if (!req.query.todo) {
+  let query = req.query
+
+  if (!req.query) {
+    res.send(query)
     return res.status(400).send('todo parameter required.')
   }
-  let token = process.env.UPSTASH_REDIS_REST_TOKEN
   let todo = encodeURI(req.query.todo)
+  let user = encodeURI(req.query.user)
 
-  const url = `${process.env.UPSTASH_REDIS_REST_URL}/lpush/todo/${todo}?_token=${token}`
+  console.log(todo);
+  
+  // FIXME: Sanitize the todo data
+  let token = process.env.UPSTASH_REDIS_REST_TOKEN
+  const url = `${process.env.UPSTASH_REDIS_REST_URL}/lpush/${user}/${todo}?_token=${token}`
+
+
   // TODO: Change this fetch with async await
   return fetch(url)
     .then((r) => r.json())
