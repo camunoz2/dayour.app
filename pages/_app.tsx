@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
-import type { NextComponentType } from 'next'
 import type { AppProps } from 'next/app'
-import { SessionProvider, useSession } from 'next-auth/react'
+import { SessionProvider } from 'next-auth/react'
 
 import '../styles/globals.css'
 

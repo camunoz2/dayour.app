@@ -20,7 +20,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch('/api/restricted')
+      const res = await fetch('/api/list')
       const json = await res.json()
       if (json.content) { setContent(json.content) }
     }

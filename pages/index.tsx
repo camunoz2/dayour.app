@@ -13,6 +13,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (status === 'authenticated') {
+      // TODO: Evaluate router.replace()
       router.push('/dashboard')
     }
   }, [status])
