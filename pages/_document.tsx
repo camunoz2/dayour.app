@@ -1,11 +1,11 @@
-import NextDocument, { Html, Head, Main, NextScript } from 'next/document'
+import{ Html, Head, Main, NextScript } from 'next/document'
 import React from 'react'
 import ResponsiveFixed from '../components/ResponsiveTW'
 
 type Props = {}
 
-class Document extends NextDocument<Props> {
-  render() {
+export default function NextDocument<Props>() {
+  {
     return (
       <Html lang="es" className="font-body text-gray-700">
         <Head>
@@ -20,5 +20,3 @@ class Document extends NextDocument<Props> {
     )
   }
 }
-
-export default Document
