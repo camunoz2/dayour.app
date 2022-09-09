@@ -11,11 +11,7 @@ interface Props {
 export default function TimeOfDay({ title, index }: Props) {
   const { data: session } = useSession()
   const [listItems, setListItems] = useState([''])
-  const [isTodoAdded, setIsTodoAdded] = useState(false)
-
-  const addTodo = () => {
-    setIsTodoAdded(!isTodoAdded)
-  }
+  const [newTaskAdded, setNewTaskAdded] = useState(false)
 
   const data = {
     user: session?.user?.email,
@@ -23,6 +19,7 @@ export default function TimeOfDay({ title, index }: Props) {
   }
 
   useEffect(() => {
+    
     const fetchData = async () => {
       const items = await fetch('/api/list', {
         method: 'POST',
@@ -36,7 +33,7 @@ export default function TimeOfDay({ title, index }: Props) {
     }
 
     fetchData().catch(console.error)
-  }, [isTodoAdded])
+  }, [newTaskAdded])
 
   return (
     <div className="flex-1 px-6">
@@ -44,15 +41,12 @@ export default function TimeOfDay({ title, index }: Props) {
       <div className="grid grid-cols-1 gap-2">
         <Task
           index={index}
-          onAddTodo={addTodo}
-          isTodoAdded={isTodoAdded}
-          text={'Agrega una tarea!'}
+          setNewTaskAdded={setNewTaskAdded}
+          newTaskAdded={newTaskAdded}
         />
         {listItems.length > 0
           ? listItems.map((item, i) => {
-              return (
-                <TaskContent key={i} text={item}/>
-              )
+              return <TaskContent key={i} text={item} />
             })
           : ''}
       </div>
