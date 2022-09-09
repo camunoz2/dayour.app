@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import { useSession } from 'next-auth/react'
+import TaskInput from './TaskInput'
 
 interface Props {
   index: string
@@ -11,7 +12,6 @@ interface Props {
 export default function Task({ index, setNewTaskAdded, newTaskAdded }: Props) {
   const [todo, setTodo] = useState('')
   const { data: session } = useSession()
-  
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTodo(event.target.value)
@@ -34,7 +34,6 @@ export default function Task({ index, setNewTaskAdded, newTaskAdded }: Props) {
     setTodo('')
     setNewTaskAdded(!newTaskAdded)
   }
-  
 
   const TIME_OF_DAY = ['morning', 'afternoon', 'evening', 'night']
 
@@ -61,14 +60,10 @@ export default function Task({ index, setNewTaskAdded, newTaskAdded }: Props) {
             <label htmlFor="task" className="block mb-2 text-sm text-gray-900">
               What are we gonna do in the {TIME_OF_DAY[parseInt(index)]}?
             </label>
-            <input
-              type="text"
-              onChange={changeHandler}
-              value={todo}
-              placeholder={taskListExamples[Math.round(Math.random() * 9)]}
-              id="task"
-              className="my-4 bg-gray-300 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              required
+            <TaskInput
+              changeHandler={changeHandler}
+              taskListExamples={taskListExamples}
+              todo={todo}
             />
           </>
         )}

@@ -19,7 +19,6 @@ export default function TimeOfDay({ title, index }: Props) {
   }
 
   useEffect(() => {
-    
     const fetchData = async () => {
       const items = await fetch('/api/list', {
         method: 'POST',
@@ -46,7 +45,15 @@ export default function TimeOfDay({ title, index }: Props) {
         />
         {listItems.length > 0
           ? listItems.map((item, i) => {
-              return <TaskContent key={i} text={item} />
+              return (
+                <TaskContent
+                  setNewTaskAdded={setNewTaskAdded}
+                  newTaskAdded={newTaskAdded}
+                  index={index}
+                  key={i}
+                  text={item}
+                />
+              )
             })
           : ''}
       </div>
