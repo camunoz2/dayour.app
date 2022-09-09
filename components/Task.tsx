@@ -1,11 +1,15 @@
-import { useSession } from 'next-auth/react'
 import React, { useState } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import { useSession } from 'next-auth/react'
 
 interface Props {
+  text: string
   index: string
+  onAddTodo: Dispatch<SetStateAction<boolean>>
+  isTodoAdded: boolean
 }
 
-export default function Task({ index }: Props) {
+export default function Task({ text, index, onAddTodo, isTodoAdded }: Props) {
   const [todo, setTodo] = useState('')
   const { data: session } = useSession()
 
@@ -15,7 +19,12 @@ export default function Task({ index }: Props) {
 
   const addTodo = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-
+    const interval = setTimeout(() => {
+      onAddTodo(!isTodoAdded)
+      console.log('time function');
+      
+    }, 10)
+    
     const data = {
       todoText: todo,
       user: session?.user?.email,
@@ -49,14 +58,10 @@ export default function Task({ index }: Props) {
             onChange={changeHandler}
             value={todo}
             className="my-4"
-            placeholder="Add your task"
+            placeholder={text}
           />
         )}
       </form>
-      <div className="flex justify-between">
-        <div>back</div>
-        <div>next</div>
-      </div>
     </div>
   )
 }
