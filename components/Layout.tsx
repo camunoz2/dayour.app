@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import Logo from './Logo'
 import ProfileInfo from './ProfileInfo'
 import Separator from './Separator'

@@ -1,9 +1,9 @@
 import type { NextPage } from 'next'
-import { useSession, signIn, signOut } from 'next-auth/react'
+import { useSession, signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Layout from '../components/Layout'
 import LoginButton from '../components/LoginButton'
 
@@ -13,7 +13,6 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (status === 'authenticated') {
-      // TODO: Evaluate router.replace()
       router.push('/dashboard')
     }
   }, [status])
@@ -24,7 +23,7 @@ const Home: NextPage = () => {
         <title>Dayour // Login</title>
         <meta
           name="description"
-          content="Maneja tus momentos del dia, se productivo!"
+          content="You are obligated to be productive...OR..."
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>

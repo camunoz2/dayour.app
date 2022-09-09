@@ -1,19 +1,19 @@
+import { Redis } from '@upstash/redis'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
+  const redis = new Redis({
+    url: process.env.UPSTASH_REDIS_REST_URL,
+    token: process.env.UPSTASH_REDIS_REST_TOKEN
+  })
 
-  const {id} = req.query
+  const user =  req.body.user
+  const listIndex = req.body.listIndex
 
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN
-  // FIXME: pass data in this manner allow for any user to see others TODOS
-  const url = `${process.env.UPSTASH_REDIS_REST_URL}/lrange/${id}/0/100?_token=${token}`
+  const morningList = user + ':' + listIndex
 
-  // TODO: Change this fetch with async await
-  return fetch(url)
-    .then((d) => d.json())
-    .then((data) => {
-      const result = JSON.stringify(data.result)
-      return res.status(200).json(result)
-    })
+  const list = await redis.lrange(morningList, 0, 10)
+  res.status(200).json(list)
+
 }

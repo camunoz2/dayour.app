@@ -1,22 +1,34 @@
 import { useSession } from 'next-auth/react'
 import React, { useState } from 'react'
 
-export default function Task() {
+interface Props {
+  index: string
+}
+
+export default function Task({ index }: Props) {
   const [todo, setTodo] = useState('')
   const { data: session } = useSession()
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTodo(event.target.value)
-    
   }
 
   const addTodo = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (session) {
-      //FIXME: This fetch has problems with passing some characters... they are not stores (like ?<> etc)
-      fetch(`/api/add?todo=${todo}&user=${session?.user?.email?.toString()}`).then((r) => r.json)
-    } else console.log('User must be logged In to make a Task');
-    
+
+    const data = {
+      todoText: todo,
+      user: session?.user?.email,
+      todoIndex: index,
+    }
+
+    await fetch('/api/add', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
   }
 
   const loadTodos = () => {

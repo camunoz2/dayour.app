@@ -1,4 +1,4 @@
-import { useSession, signOut, signIn } from 'next-auth/react'
+import { useSession, signOut} from 'next-auth/react'
 
 export default function ProfileInfo() {
   const { data: session } = useSession()
