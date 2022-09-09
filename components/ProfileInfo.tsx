@@ -14,8 +14,8 @@ export default function ProfileInfo() {
           />
         )}
       </div>
-      <div className="hidden md:block">
-        <h2 className="font-bold text-xl">{session?.user?.name}</h2>
+      <div>
+        <h2 className="text-xs md:font-bold md:text-xl">{session?.user?.name}</h2>
         {!session ? (
           ''
         ) : (
