@@ -12,7 +12,7 @@ export default function NextDocument<Props>() {
           <link rel="stylesheet" href="https://use.typekit.net/jbl1jxi.css" />
         </Head>
         <body>
-          <ResponsiveFixed />
+          {/* <ResponsiveFixed /> */} 
           <Main />
           <NextScript />
         </body>
