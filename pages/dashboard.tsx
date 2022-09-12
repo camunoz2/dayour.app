@@ -2,13 +2,18 @@ import { useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
-
+import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 
 import DateComponent from '../components/DateComponent'
 import Layout from '../components/Layout'
 import PendingTasks from '../components/PendingTasks'
 import Separator from '../components/Separator'
 import TimeOfDayContainer from '../components/TimeOfDayContainer'
+
+export interface DateObject {
+  currentDay: number
+  currentMonth: string
+}
 
 export default function Dashboard() {
   const { data: session, status } = useSession()
@@ -25,7 +30,6 @@ export default function Dashboard() {
   if (typeof window !== undefined && loading) return null
 
   return (
-    // TODO: Fix multiple session calls https://github.com/nextauthjs/next-auth/issues/487
     <>
       <Head>
         <title>Dayour // Calendar</title>
@@ -35,7 +39,7 @@ export default function Dashboard() {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
+
       <Layout>
         <DateComponent />
         <PendingTasks />
