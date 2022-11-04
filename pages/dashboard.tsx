@@ -2,13 +2,14 @@ import { useEffect } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
-import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 
 import DateComponent from '../components/DateComponent'
 import Layout from '../components/Layout'
-import PendingTasks from '../components/PendingTasks'
 import Separator from '../components/Separator'
-import TimeOfDayContainer from '../components/TimeOfDayContainer'
+import TimeOfDay from '../components/TimeOfDay'
+import VerticalDivider from '../components/VerticalDivider'
+import { useIsMutating, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useRive, useStateMachineInput } from '@rive-app/react-canvas'
 
 export interface DateObject {
   currentDay: number
@@ -16,9 +17,26 @@ export interface DateObject {
 }
 
 export default function Dashboard() {
-  const { data: session, status } = useSession()
+  const { status } = useSession()
+  const { rive, RiveComponent } = useRive({
+    src: '/mole.riv',
+    autoplay: true,
+    stateMachines: 'state_machine',
+  })
+  const riveStateMachine = useStateMachineInput(
+    rive,
+    'state_machine',
+    'addTask'
+  )
+
   const loading = status === 'loading'
   const router = useRouter()
+
+  const isMutating = useIsMutating()
+
+  if (isMutating > 0 && riveStateMachine) {
+    riveStateMachine.fire()
+  }
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -33,18 +51,25 @@ export default function Dashboard() {
     <>
       <Head>
         <title>Dayour // Calendar</title>
-        <meta
-          name="description"
-          content="Maneja tus momentos del dia, se productivo!"
-        />
+        <meta name="description" content="Be productive! all day long 👌" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Layout>
         <DateComponent />
-        <PendingTasks />
         <Separator />
-        <TimeOfDayContainer />
+        <div className="relative flex flex-col md:flex-row justify-between pt-6 bg-pinky">
+          <RiveComponent className="w-64 h-64 absolute right-36 top-0 -translate-y-36 -z-10" />
+          <TimeOfDay index="0" title="morning" />
+          <VerticalDivider />
+          <TimeOfDay index="1" title="afternoon" />
+          <VerticalDivider />
+
+          <TimeOfDay index="2" title="evening" />
+          <VerticalDivider />
+
+          <TimeOfDay index="3" title="night" />
+        </div>
       </Layout>
     </>
   )

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import { useSession } from 'next-auth/react'
 import TaskInput from './TaskInput'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 interface Props {
   index: string
@@ -9,30 +10,37 @@ interface Props {
   newTaskAdded: boolean
 }
 
-export default function Task({ index, setNewTaskAdded, newTaskAdded }: Props) {
+export default function Task({ index }: Props) {
   const [todo, setTodo] = useState('')
   const { data: session } = useSession()
+  const queryClient = useQueryClient()
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTodo(event.target.value)
   }
 
-  const addTodo = async (event: React.FormEvent<HTMLFormElement>) => {
+  const addMutation = useMutation(addTodo, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([index])
+    },
+  })
+
+  function addTodo(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const data = {
-      todoText: todo,
-      user: session?.user?.email,
-      todoIndex: index,
-    }
-    await fetch('/api/add', {
+    //Clear input
+    setTodo('')
+
+    return fetch('/api/add', {
       method: 'POST',
-      body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        todoText: todo,
+        user: session?.user?.email,
+        todoIndex: index,
+      }),
     })
-    setTodo('')
-    setNewTaskAdded(!newTaskAdded)
   }
 
   const TIME_OF_DAY = ['morning', 'afternoon', 'evening', 'night']
@@ -51,8 +59,8 @@ export default function Task({ index, setNewTaskAdded, newTaskAdded }: Props) {
   ]
 
   return (
-    <div className="border border-gray-700 rounded-sm flex flex-col px-2 pt-4 pb-2">
-      <form onSubmit={addTodo}>
+    <div className="rounded-md flex flex-col px-2 pt-4 pb-2">
+      <form onSubmit={addMutation.mutate}>
         {!session ? (
           'You must be signed In'
         ) : (

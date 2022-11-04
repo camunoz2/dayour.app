@@ -1,7 +1,8 @@
 import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Task from './Task'
 import TaskContent from './TaskContent'
+import { useQuery } from '@tanstack/react-query'
 
 interface Props {
   title: string
@@ -10,29 +11,20 @@ interface Props {
 
 export default function TimeOfDay({ title, index }: Props) {
   const { data: session } = useSession()
-  const [listItems, setListItems] = useState([''])
   const [newTaskAdded, setNewTaskAdded] = useState(false)
 
-  const data = {
-    user: session?.user?.email,
-    listIndex: index,
-  }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const items = await fetch('/api/list', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((data) => data.json())
-        .then((res) => setListItems(res))
-    }
-
-    fetchData().catch(console.error)
-  }, [newTaskAdded])
+  const listItems = useQuery([index], (): Promise<string[]> => {
+    return fetch('/api/list', {
+      method: 'POST',
+      body: JSON.stringify({
+        user: session?.user?.email,
+        listIndex: index,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((res) => res.json())
+  })
 
   return (
     <div className="flex-1 px-6">
@@ -43,19 +35,21 @@ export default function TimeOfDay({ title, index }: Props) {
           setNewTaskAdded={setNewTaskAdded}
           newTaskAdded={newTaskAdded}
         />
-        {listItems.length > 0
-          ? listItems.map((item, i) => {
-              return (
-                <TaskContent
-                  setNewTaskAdded={setNewTaskAdded}
-                  newTaskAdded={newTaskAdded}
-                  index={index}
-                  key={i}
-                  text={item}
-                />
-              )
-            })
-          : ''}
+        {listItems.isLoading ? (
+          <p>loading...</p>
+        ) : (
+          listItems.data?.map((item, i) => {
+            return (
+              <TaskContent
+                setNewTaskAdded={setNewTaskAdded}
+                newTaskAdded={newTaskAdded}
+                index={index}
+                key={i}
+                text={item}
+              />
+            )
+          })
+        )}
       </div>
     </div>
   )

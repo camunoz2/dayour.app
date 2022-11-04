@@ -1,25 +1,14 @@
-import { Redis } from "@upstash/redis"
-import type { NextApiRequest, NextApiResponse } from "next"
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { redis } from '../../lib/redisClient'
 
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN,
-})
-
-
-export default async (req:NextApiRequest , res: NextApiResponse) => {
-
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   const value = req.body.todoText
   const user = req.body.user
   const index = req.body.todoIndex
 
   const key = user + ':' + index
 
-  await redis.lpush(key, value)
+  const push = await redis.lpush(key, value)
 
-
-  res.status(200)
-
-  // TODO: What is this line doing?, at least it clear's the server console weird messages 😂
-  res.end()
+  res.status(200).end()
 }

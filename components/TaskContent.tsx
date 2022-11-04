@@ -1,5 +1,7 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import type { Dispatch, SetStateAction } from 'react'
+import SvgClose from './SvgClose'
 
 interface Props {
   text: string
@@ -8,40 +10,44 @@ interface Props {
   newTaskAdded: boolean
 }
 
-export default function TaskContent({
-  text,
-  index,
-  setNewTaskAdded,
-  newTaskAdded,
-}: Props) {
+export default function TaskContent({ text, index }: Props) {
+  const queryClient = useQueryClient()
   const { data: session } = useSession()
 
-  const data = {
-    todoText: text,
-    user: session?.user?.email,
-    todoIndex: index,
-  }
+  const itemMutation = useMutation(removeElement, {
+    onSuccess: () => {
+      return queryClient.invalidateQueries([index])
+    },
+  })
 
-  // Yep... if two todos are the same, they are note deleted inmediately... the list was a poor choice for this data structure
-  // But for a portfolio, it works fine...
-  const removeElement = () => {
-    fetch('/api/remove', {
+  function removeElement() {
+    return fetch('/api/remove', {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        user: session?.user?.email,
+        todoIndex: index,
+        todoText: text,
+      }),
       headers: {
         'Content-Type': 'application/json',
       },
     })
-    setNewTaskAdded(!newTaskAdded)
+  }
+
+  const rotate = {
+    transform: `rotateZ(${Math.random() * 2}deg)`,
   }
 
   return (
-    <div className="border border-gray-700 rounded-sm flex flex-col px-2 pt-4 pb-2">
+    <div
+      style={rotate}
+      className="bg-green rounded-lg flex flex-col px-4 pt-4 pb-3 transition-all"
+    >
       <div
-        onClick={removeElement}
-        className="flex items-center justify-center px-2 bg-slate-300 rounded-full self-end cursor-pointer"
+        onClick={() => itemMutation.mutate()}
+        className="self-end cursor-pointer"
       >
-        X
+        <SvgClose />
       </div>
       <div>{text}</div>
     </div>

@@ -1,5 +1,4 @@
 export default function DateComponent() {
-
   const monthNames = [
     'ENE',
     'FEB',
@@ -21,8 +20,10 @@ export default function DateComponent() {
 
   return (
     <div className="flex flex-col items-center my-4">
-      <h2 className="font-display font-bold text-4xl">{currentDay}</h2>
-      <p>{currentMonth}</p>
+      <h2 className="font-display font-bold text-4xl text-dark ">
+        {currentDay}
+      </h2>
+      <p className="text-dark">{currentMonth}</p>
     </div>
   )
 }
