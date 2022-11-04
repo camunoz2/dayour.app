@@ -59,7 +59,7 @@ export default function Dashboard() {
         <DateComponent />
         <Separator />
         <div className="relative flex flex-col md:flex-row justify-between pt-6 bg-pinky">
-          <RiveComponent className="w-64 h-64 absolute right-1/2 -translate-x-1/2 md:translate-x-0 md:right-36 top-0 -translate-y-36 -z-10" />
+          <RiveComponent className="w-64 h-64 absolute left-1/2 -translate-x-1/2 md:translate-x-0 md:right-36 top-0 -translate-y-36 -z-10" />
           <TimeOfDay index="0" title="morning" />
           <VerticalDivider />
           <TimeOfDay index="1" title="afternoon" />
