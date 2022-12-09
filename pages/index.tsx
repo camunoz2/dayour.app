@@ -17,7 +17,9 @@ const Home: NextPage = () => {
       </Head>
       <Layout>
         <h1 className="text-9xl font-black">DAYOUR</h1>
-        <p className="text-2xl">Unleash the power of "Productivity"</p>
+        <p className="text-2xl">
+          Unleash the power of &apos;Productivity&apos;
+        </p>
         <div className="mt-12">
           <p className="text-bold text-xl">
             Log in with{' '}
