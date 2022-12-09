@@ -10,7 +10,10 @@ const Layout = ({ children }: Props) => {
     <div className="container mx-auto px-4 h-screen flex flex-col justify-between">
       <header className="flex justify-between py-4">
         <ProfileInfo />
-        <a href="https://github.com/camunoz2/dayour.app" className="flex gap-2">
+        <a
+          href="https://github.com/camunoz2/dayour.app"
+          className="flex gap-2 cursor-pointer"
+        >
           <div className="h-10">
             <img src="/github.svg" alt="" />
           </div>
@@ -21,7 +24,9 @@ const Layout = ({ children }: Props) => {
       <main>{children}</main>
 
       <footer className="flex justify-center pt-20 pb-4">
-        <a href="https://arjeldev.vercel.app/">ArjelDev</a>
+        <a className="cursor-pointer" href="https://arjeldev.vercel.app/">
+          ArjelDev
+        </a>
       </footer>
     </div>
   )

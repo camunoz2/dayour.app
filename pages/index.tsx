@@ -25,14 +25,14 @@ const Home: NextPage = () => {
             Log in with{' '}
             <span
               onClick={() => signIn('github', { callbackUrl: '/dashboard' })}
-              className="bg-red-900 text-orange-100 px-4 py-2 rounded-md"
+              className="bg-red-900 text-orange-100 px-4 py-2 rounded-md cursor-pointer hover:bg-red-500"
             >
               Github
             </span>{' '}
             or{' '}
             <span
               onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
-              className="bg-red-900 text-orange-100 px-4 py-2 rounded-md"
+              className="bg-red-900 text-orange-100 px-4 py-2 rounded-md cursor-pointer hover:bg-red-500"
             >
               Google
             </span>
