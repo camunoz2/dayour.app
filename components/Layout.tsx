@@ -1,7 +1,5 @@
 import { ReactNode } from 'react'
-import Logo from './Logo'
 import ProfileInfo from './ProfileInfo'
-import Separator from './Separator'
 
 interface Props {
   children: ReactNode
@@ -9,15 +7,23 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
   return (
-    <div className="container mx-auto px-4 z-0">
-      <header className="flex flex-row justify-between mt-10 mb-4">
-        <Logo />
+    <div className="container mx-auto px-4 h-screen flex flex-col justify-between">
+      <header className="flex justify-between py-4">
         <ProfileInfo />
+        <div className="flex gap-2">
+          <div className="h-10">
+            <img src="/github.svg" alt="" />
+          </div>
+          <p>Github</p>
+        </div>
       </header>
+
       <main>{children}</main>
 
-      <footer className="flex justify-center">
-        <h4>Dayour App / Made by arjel.dev</h4>
+      <footer className="flex justify-center pt-20 pb-4">
+        <a href="https://arjeldev.vercel.app/" target="_blank" rel="noopener">
+          ArjelDev
+        </a>
       </footer>
     </div>
   )

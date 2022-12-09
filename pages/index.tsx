@@ -3,7 +3,6 @@ import { signIn } from 'next-auth/react'
 
 import Head from 'next/head'
 import Layout from '../components/Layout'
-import LoginButton from '../components/LoginButton'
 
 const Home: NextPage = () => {
   return (
@@ -11,33 +10,31 @@ const Home: NextPage = () => {
       <Head>
         <title>Dayour // Login</title>
         <meta
-          name="description"
-          content="Dayour is a Todo list app with a redis backend and nextjs frontend"
+          name="Make productivity, a first class citizen"
+          content="Dayour is a Todo list app with a redis backend and nextjs front-end"
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <div className="flex flex-col items-center justify-center py-16">
-          <div className="border border-gray-700 rounded-xl py-10 w-full">
-            <h2 className="text-center text-xl mb-4">Log In with...</h2>
-            <div className="flex flex-col items-center gap-2">
-              <LoginButton
-                handleClick={() =>
-                  signIn('github', { callbackUrl: '/dashboard' })
-                }
-              >
-                Github
-              </LoginButton>
-              <p>or</p>
-              <LoginButton
-                handleClick={() =>
-                  signIn('google', { callbackUrl: '/dashboard' })
-                }
-              >
-                Google
-              </LoginButton>
-            </div>
-          </div>
+        <h1 className="text-9xl font-black">DAYOUR</h1>
+        <p className="text-2xl">Unleash the power of "Productivity"</p>
+        <div className="mt-12">
+          <p className="text-bold text-xl">
+            Log in with{' '}
+            <span
+              onClick={() => signIn('github', { callbackUrl: '/dashboard' })}
+              className="bg-red-900 text-orange-100 px-4 py-2 rounded-md"
+            >
+              Github
+            </span>{' '}
+            or{' '}
+            <span
+              onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+              className="bg-red-900 text-orange-100 px-4 py-2 rounded-md"
+            >
+              Google
+            </span>
+          </p>
         </div>
       </Layout>
     </>
