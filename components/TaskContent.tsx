@@ -41,7 +41,7 @@ export default function TaskContent({ text, index }: Props) {
   return (
     <div
       style={rotate}
-      className="bg-green rounded-lg flex flex-col px-4 pt-4 pb-3 transition-all"
+      className="bg-emerald-900 text-orange-100 font-light rounded-lg flex flex-col px-4 pt-4 pb-3 transition-all"
     >
       <div
         onClick={() => itemMutation.mutate()}

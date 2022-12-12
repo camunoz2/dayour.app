@@ -2,10 +2,11 @@ import { Canvas, useLoader, useFrame, PrimitiveProps } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import type { NextPage } from 'next'
 import { PresentationControls } from '@react-three/drei'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import Head from 'next/head'
 import Layout from '../components/Layout'
-import { Suspense, useRef } from 'react'
+import { Suspense, useEffect, useRef } from 'react'
+import { useRouter } from 'next/router'
 
 function CustomScene() {
   useFrame(({ clock }) => {
@@ -21,6 +22,15 @@ function CustomScene() {
 }
 
 const Home: NextPage = () => {
+  const { status } = useSession()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/dashboard')
+    }
+  }, [status])
+
   return (
     <>
       <Head>
