@@ -12,7 +12,6 @@ function CustomScene() {
     const a = clock.getElapsedTime()
   })
   const model = useLoader(GLTFLoader, '/model.gltf')
-  const myModel = useRef()
 
   return (
     <Suspense fallback={null}>
